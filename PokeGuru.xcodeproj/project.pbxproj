@@ -10,6 +10,12 @@
 		C7FA53CF1D7ED65700BCAB7B /* PokeGuru.h in Headers */ = {isa = PBXBuildFile; fileRef = C7FA53CE1D7ED65700BCAB7B /* PokeGuru.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7FA53D61D7ED65700BCAB7B /* PokeGuru.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7FA53CB1D7ED65700BCAB7B /* PokeGuru.framework */; };
 		C7FA53DB1D7ED65700BCAB7B /* PokeGuruTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53DA1D7ED65700BCAB7B /* PokeGuruTests.swift */; };
+		C7FA53E61D7ED68B00BCAB7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7FA53E51D7ED68B00BCAB7B /* Assets.xcassets */; };
+		C7FA53E81D7ED6BF00BCAB7B /* PokeGuru.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53E71D7ED6BF00BCAB7B /* PokeGuru.swift */; };
+		C7FA53EB1D7ED7AC00BCAB7B /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53EA1D7ED7AC00BCAB7B /* GameData.swift */; };
+		C7FA53EC1D7ED7AC00BCAB7B /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53EA1D7ED7AC00BCAB7B /* GameData.swift */; };
+		C7FA53EE1D7EDA7100BCAB7B /* PokeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */; };
+		C7FA53EF1D7EDA7100BCAB7B /* PokeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +35,10 @@
 		C7FA53D51D7ED65700BCAB7B /* PokeGuruTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokeGuruTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FA53DA1D7ED65700BCAB7B /* PokeGuruTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeGuruTests.swift; sourceTree = "<group>"; };
 		C7FA53DC1D7ED65700BCAB7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7FA53E51D7ED68B00BCAB7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C7FA53E71D7ED6BF00BCAB7B /* PokeGuru.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeGuru.swift; sourceTree = "<group>"; };
+		C7FA53EA1D7ED7AC00BCAB7B /* GameData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
+		C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeMath.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +81,10 @@
 		C7FA53CD1D7ED65700BCAB7B /* PokeGuru */ = {
 			isa = PBXGroup;
 			children = (
-				C7FA53CE1D7ED65700BCAB7B /* PokeGuru.h */,
-				C7FA53D01D7ED65700BCAB7B /* Info.plist */,
+				C7FA53E91D7ED6C700BCAB7B /* Supporting Files */,
+				C7FA53E71D7ED6BF00BCAB7B /* PokeGuru.swift */,
+				C7FA53EA1D7ED7AC00BCAB7B /* GameData.swift */,
+				C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */,
 			);
 			path = PokeGuru;
 			sourceTree = "<group>";
@@ -84,6 +96,16 @@
 				C7FA53DC1D7ED65700BCAB7B /* Info.plist */,
 			);
 			path = PokeGuruTests;
+			sourceTree = "<group>";
+		};
+		C7FA53E91D7ED6C700BCAB7B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C7FA53CE1D7ED65700BCAB7B /* PokeGuru.h */,
+				C7FA53D01D7ED65700BCAB7B /* Info.plist */,
+				C7FA53E51D7ED68B00BCAB7B /* Assets.xcassets */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +199,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7FA53E61D7ED68B00BCAB7B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +217,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7FA53E81D7ED6BF00BCAB7B /* PokeGuru.swift in Sources */,
+				C7FA53EE1D7EDA7100BCAB7B /* PokeMath.swift in Sources */,
+				C7FA53EB1D7ED7AC00BCAB7B /* GameData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +228,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7FA53DB1D7ED65700BCAB7B /* PokeGuruTests.swift in Sources */,
+				C7FA53EF1D7EDA7100BCAB7B /* PokeMath.swift in Sources */,
+				C7FA53EC1D7ED7AC00BCAB7B /* GameData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +338,7 @@
 		C7FA53E01D7ED65700BCAB7B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,12 +349,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = brianjob.PokeGuru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		C7FA53E11D7ED65700BCAB7B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
