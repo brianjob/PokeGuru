@@ -44,6 +44,10 @@ public func ==(lhs: GameDataPokemon, rhs: GameDataPokemon) -> Bool {
 }
 
 public struct GameDataMove: Equatable {
+    private let EFFECTIVE_MODIFIER = 1.25
+    private let NOT_EFFECTIVE_MODIFIER = 0.8
+    private let NO_EFFECT_MODIFIER = 0.8
+    
     let id: Int
     let name: String
     let moveType: String
@@ -59,6 +63,25 @@ public struct GameDataMove: Equatable {
     let damageWindowEnd: Int
     let energyDelta: Int
     let criticalChance: Double
+    
+    // returns the type modifier of a move against a given defender
+    public func calcTypeModifier(defender: GameDataPokemon) -> Double {
+        var typeModifier = 1.0
+        
+        for type in defender.types {
+            if self.type.effective.contains(type.id) {
+                typeModifier *= EFFECTIVE_MODIFIER
+            }
+            if self.type.notEffective.contains(type.id) {
+                typeModifier *= NOT_EFFECTIVE_MODIFIER
+            }
+            if self.type.noEffect.contains(type.id) {
+                typeModifier *= NO_EFFECT_MODIFIER
+            }
+        }
+        
+        return typeModifier
+    }
 }
 
 public func ==(lhs: GameDataMove, rhs: GameDataMove) -> Bool {

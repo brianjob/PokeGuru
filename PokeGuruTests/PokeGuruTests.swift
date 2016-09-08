@@ -90,21 +90,6 @@ class PokeGuruTests: XCTestCase {
         XCTAssert(fairy.name == "Fairy")
     }
     
-    // MARK: PokeMath tests
-    
-    func testCpModifier() {
-        let pokeMath = PokeMath()
-
-        let level4 = pokeMath.calcLevel(97, baseAtt: 126, baseDef: 126, baseStam: 90, indAtt: 0, indDef: 10, indStam: 10)
-        XCTAssert(level4 == 4.0)
-        
-        let level31p5 = pokeMath.calcLevel(2465, baseAtt: 186, baseDef: 168, baseStam: 260, indAtt: 15, indDef: 15, indStam: 13)
-        XCTAssert(level31p5 == 31.5)
-        
-        let level24 = pokeMath.calcLevel(1817, baseAtt: 192, baseDef: 196, baseStam: 190, indAtt: 13, indDef: 13, indStam: 15)
-        XCTAssert(level24 == 24)
-    }
-    
     func testPerformancePokeGuru() {
         self.measureBlock {
             let _ = PokeGuru()
