@@ -12,31 +12,35 @@ public class PokeGuru {
     private static let GAME_DATA_POKEMON = "GAME_DATA_POKEMON"
     private static let GAME_DATA_MOVES = "GAME_DATA_MOVES"
     private static let GAME_DATA_TYPES = "GAME_DATA_TYPES"
+
+    private static let typeData: [GameDataType] = PokeGuru.getTypeData()
+    private static let pokemonData: [GameDataPokemon] = PokeGuru.getPokemonData()
+    private static let moveData: [GameDataMove] = PokeGuru.getMoveData()
     
-    private let pokemonData: [GameDataPokemon]
-    private let moveData: [GameDataMove]
-    private let typeData: [GameDataType]
-    
-    init() {
-        pokemonData = PokeGuru.getPokemonData()
-        moveData = PokeGuru.getMoveData()
-        typeData = PokeGuru.getTypeData()
-    }
-    
-    public func pokemon(forId id: Int) -> GameDataPokemon {
+    public static func pokemon(forId id: Int) -> GameDataPokemon {
         return pokemonData[id - 1]
     }
     
-    public func move(forId id: Int) -> GameDataMove {
+    public static func move(forId id: Int) -> GameDataMove {
         return moveData.filter { $0.id == id }[0]
     }
     
-    public func type(forId id: Int) -> GameDataType {
+    public static func type(forId id: Int) -> GameDataType {
         return typeData[id - 1]
     }
     
     private static func extractValue<T>(ofkey key: String, fromDict dict: [String: AnyObject?]) -> T? {
         return dict[key] as? T
+    }
+    
+    // takes an array of type ids and returns their corresponding type objects
+    private static func lookupTypes(typeIds: [Int]) -> [GameDataType] {
+        return typeIds.map { return self.type(forId: $0) }
+    }
+    
+    // convenience method for only looking up one type
+    private static func lookupType(typeId: Int) -> GameDataType {
+        return lookupTypes([typeId])[0]
     }
     
     private static func getPokemonData() -> [GameDataPokemon] {
@@ -47,10 +51,12 @@ public class PokeGuru {
         let pokemonJson = try! NSJSONSerialization.JSONObjectWithData(pokemonDataFile, options: .AllowFragments)
 
         for pokemonDict in pokemonJson as! [[String: AnyObject]] {
+            let typeIds: [Int] = extractValue(ofkey: "Types", fromDict: pokemonDict)!
+            
             let gameDataPokemon =
                 GameDataPokemon(id: extractValue(ofkey: "ID", fromDict: pokemonDict)!,
                                 name: extractValue(ofkey: "Name", fromDict: pokemonDict)!,
-                                types: extractValue(ofkey: "Types", fromDict: pokemonDict)!,
+                                types: lookupTypes(typeIds),
                                 baseStamina: extractValue(ofkey: "Base Stamina", fromDict: pokemonDict)!,
                                 baseAttack: extractValue(ofkey: "Base Attack", fromDict: pokemonDict)!,
                                 baseDefense: extractValue(ofkey: "Base Defense", fromDict: pokemonDict)!,
@@ -91,12 +97,14 @@ public class PokeGuru {
         let movesJson = try! NSJSONSerialization.JSONObjectWithData(movesDataFile, options: .AllowFragments)
         
         for movesDict in movesJson as! [[String: AnyObject]] {
+            let typeId: Int = extractValue(ofkey: "Type", fromDict: movesDict)!
+            
             let gameDataMove =
                 GameDataMove(id: extractValue(ofkey: "ID", fromDict: movesDict)!,
                              name: extractValue(ofkey: "Name", fromDict: movesDict)!,
                              moveType: extractValue(ofkey: "Move Type", fromDict: movesDict)!,
                              animationId: extractValue(ofkey: "Animation ID", fromDict: movesDict)!,
-                             type: extractValue(ofkey: "Type", fromDict: movesDict)!,
+                             type: lookupType(typeId),
                              power: extractValue(ofkey: "Power", fromDict: movesDict) ?? 0,
                              accuracyChance: extractValue(ofkey: "Accuracy Chance", fromDict: movesDict)!,
                              staminaLossScalar: extractValue(ofkey: "Stamina Loss Scalar", fromDict: movesDict) ?? 0,

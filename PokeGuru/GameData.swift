@@ -8,10 +8,10 @@
 
 import Foundation
 
-public struct GameDataPokemon {
+public struct GameDataPokemon: Equatable {
     let id: Int
     let name: String
-    let types: [Int]
+    let types: [GameDataType]
     let baseStamina: Int
     let baseAttack: Int
     let baseDefense: Int
@@ -39,12 +39,16 @@ public struct GameDataPokemon {
     let candyToEvolve: Int
 }
 
-public struct GameDataMove {
+public func ==(lhs: GameDataPokemon, rhs: GameDataPokemon) -> Bool {
+    return lhs.id == rhs.id
+}
+
+public struct GameDataMove: Equatable {
     let id: Int
     let name: String
     let moveType: String
     let animationId: Int
-    let type: Int
+    let type: GameDataType
     let power: Int
     let accuracyChance: Double
     let staminaLossScalar: Double
@@ -57,10 +61,20 @@ public struct GameDataMove {
     let criticalChance: Double
 }
 
-public struct GameDataType {
+public func ==(lhs: GameDataMove, rhs: GameDataMove) -> Bool {
+    return lhs.id == rhs.id
+}
+
+public struct GameDataType: Hashable {
     let id: Int
     let name: String
     let effective: [Int]
     let notEffective: [Int]
     let noEffect: [Int]
+    
+    public var hashValue: Int { get { return id } }
+}
+
+public func ==(lhs: GameDataType, rhs: GameDataType) -> Bool {
+    return lhs.id == rhs.id
 }

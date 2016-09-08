@@ -19,12 +19,10 @@ class PokeGuruTests: XCTestCase {
     }
     
     func testPokemonLoaded() {
-        let pokeGuru = PokeGuru()
-        
-        let bulbasaur = pokeGuru.pokemon(forId: 1)
+        let bulbasaur = PokeGuru.pokemon(forId: 1)
         XCTAssert(bulbasaur.id == 1)
         XCTAssert(bulbasaur.name == "Bulbasaur")
-        XCTAssert(bulbasaur.types == [5, 8])
+        XCTAssert(bulbasaur.types == [PokeGuru.type(forId: 5), PokeGuru.type(forId: 8)])
         XCTAssert(bulbasaur.baseStamina == 90)
         XCTAssert(bulbasaur.baseAttack == 126)
         XCTAssert(bulbasaur.baseDefense == 126)
@@ -51,20 +49,18 @@ class PokeGuruTests: XCTestCase {
         XCTAssert(bulbasaur.familyId == 1)
         XCTAssert(bulbasaur.candyToEvolve == 25)
         
-        let mew = pokeGuru.pokemon(forId: 151)
+        let mew = PokeGuru.pokemon(forId: 151)
         XCTAssert(mew.name == "Mew")
     }
     
     func testMovesLoaded() {
-        let pokeGuru = PokeGuru()
-        
-        let wrap = pokeGuru.move(forId: 13)
+        let wrap = PokeGuru.move(forId: 13)
         
         XCTAssert(wrap.id == 13)
         XCTAssert(wrap.name == "Wrap")
         XCTAssert(wrap.moveType == "Charge")
         XCTAssert(wrap.animationId == 5)
-        XCTAssert(wrap.type == 1)
+        XCTAssert(wrap.type == PokeGuru.type(forId: 1))
         XCTAssert(wrap.power == 25)
         XCTAssert(wrap.accuracyChance == 1)
         XCTAssert(wrap.staminaLossScalar == 0.06)
@@ -76,15 +72,13 @@ class PokeGuruTests: XCTestCase {
         XCTAssert(wrap.energyDelta == -20)
         XCTAssert(wrap.criticalChance == 0.05)
         
-        let rockSmash = pokeGuru.move(forId: 241)
+        let rockSmash = PokeGuru.move(forId: 241)
         
         XCTAssert(rockSmash.name == "Rock Smash")
     }
     
     func testTypesLoaded() {
-        let pokeGuru = PokeGuru()
-        
-        let normal = pokeGuru.type(forId: 1)
+        let normal = PokeGuru.type(forId: 1)
         
         XCTAssert(normal.id == 1)
         XCTAssert(normal.name == "Normal")
@@ -92,7 +86,7 @@ class PokeGuruTests: XCTestCase {
         XCTAssert(normal.notEffective == [13, 17])
         XCTAssert(normal.noEffect == [14])
         
-        let fairy = pokeGuru.type(forId: 18)
+        let fairy = PokeGuru.type(forId: 18)
         XCTAssert(fairy.name == "Fairy")
     }
     
@@ -101,13 +95,13 @@ class PokeGuruTests: XCTestCase {
     func testCpModifier() {
         let pokeMath = PokeMath()
 
-        let level4 = pokeMath.level(97, baseAtt: 126, baseDef: 126, baseStam: 90, indAtt: 0, indDef: 10, indStam: 10)
+        let level4 = pokeMath.calcLevel(97, baseAtt: 126, baseDef: 126, baseStam: 90, indAtt: 0, indDef: 10, indStam: 10)
         XCTAssert(level4 == 4.0)
         
-        let level31p5 = pokeMath.level(2465, baseAtt: 186, baseDef: 168, baseStam: 260, indAtt: 15, indDef: 15, indStam: 13)
+        let level31p5 = pokeMath.calcLevel(2465, baseAtt: 186, baseDef: 168, baseStam: 260, indAtt: 15, indDef: 15, indStam: 13)
         XCTAssert(level31p5 == 31.5)
         
-        let level24 = pokeMath.level(1817, baseAtt: 192, baseDef: 196, baseStam: 190, indAtt: 13, indDef: 13, indStam: 15)
+        let level24 = pokeMath.calcLevel(1817, baseAtt: 192, baseDef: 196, baseStam: 190, indAtt: 13, indDef: 13, indStam: 15)
         XCTAssert(level24 == 24)
     }
     
