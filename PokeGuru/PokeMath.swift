@@ -85,18 +85,14 @@ class PokeMath {
         return Double(1 + closestIndexSoFar) / 2.0 + 0.5
     }
     
-    func calcAttack(baseAttack: Int, individualAttack: Int, cpModifier: Double) -> Double {
-        return Double(baseAttack + individualAttack) * cpModifier
+    // calculate attack and defense
+    func calcStat(baseStat: Double, individualStat: Double, cpModifier: Double) -> Double {
+        return Double(baseStat + individualStat) * cpModifier
     }
     
-    func calcDefense(baseDefense: Int, individualDefense: Int, cpModifier: Double) -> Double {
-        return Double(baseDefense + individualDefense) * cpModifier
+    func calcHp(baseStam: Double, individualStam: Double, cpModifier: Double) -> Double {
+        return floor(calcStat(baseStam, individualStat: individualStam, cpModifier: cpModifier))
     }
-    
-    func calcHp(baseStamina: Int, individualStamina: Int, cpModifier: Double) -> Double {
-        return Double(baseStamina + individualStamina) * cpModifier
-    }
-
     
     // returns the number of charges a special move has given an energy delta
     func calcSc(energyDelta: Int) -> Int {

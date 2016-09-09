@@ -11,6 +11,13 @@ import XCTest
 
 class PokeMathTest: XCTestCase {
     // MARK: test values for charmander
+    private let baseAtt = 128.0
+    private let baseDef = 108.0
+    private let baseStam = 78.0
+    private let indAtt = 7.5
+    private let indDef = 7.5
+    private let indStam = 7.5
+    private let cpM = 0.7317
     private let hp = 62.00000
     private let atk = 99.14535
     private let def = 84.51135
@@ -75,6 +82,18 @@ class PokeMathTest: XCTestCase {
         let minLevelCpM = 0.0940000
         let minLevelCpMTest = pokeMath.calcCpModifier(minLevel)
         XCTAssert(minLevelCpMTest == minLevelCpM)
+    }
+    
+    func testCalcStat() {
+        let pokeMath = PokeMath()
+        
+        let attTest = pokeMath.calcStat(baseAtt, individualStat: indAtt, cpModifier: cpM)
+        let defTest = pokeMath.calcStat(baseDef, individualStat: indDef, cpModifier: cpM)
+        let hpTest = pokeMath.calcHp(baseStam, individualStam: indStam, cpModifier: cpM)
+        
+        XCTAssert(equal(attTest,atk))
+        XCTAssert(equal(defTest,def))
+        XCTAssert(equal(hpTest,hp))
     }
     
     func testCalcNumHits() {
