@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PokeGuru/PokeGuru.swift"
-            timestampString = "495162512.354288"
+            timestampString = "495208846.222565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "init(pokemonId:fastMoveId:specialMoveId:cp:individualAttack:individualDefense:individualStamina:)"
             landmarkType = "5">
          </BreakpointContent>

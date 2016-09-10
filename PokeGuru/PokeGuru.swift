@@ -31,7 +31,8 @@ public class PokeGuru {
     private let h_xy: Double
 
     private let eHpDefense: Double
-    private let eHp: Double
+
+    public let eHp: Double
     
     public let pokemon: GameDataPokemon
     public let fastMove: GameDataMove
