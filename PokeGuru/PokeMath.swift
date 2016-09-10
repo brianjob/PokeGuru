@@ -9,6 +9,8 @@
 import Foundation
 
 class PokeMath {
+    let STAB = 1.25
+    
     private let ENERGY_PER_HP_LOST = 0.5
     private let FULL_ENERGY = 100
     private let S_CAST_TIME = 0.1
@@ -21,6 +23,8 @@ class PokeMath {
     
     private let C = 0.5 // damage constant
     private let DMG_MULT = 0.5 // Damage multiplier
+    
+    private let DEF_HP_MULT = 2.0 // Defending HP Multiplier
     
     private let nC = 2.0 // Number of time generating 100 energy
     
@@ -57,10 +61,14 @@ class PokeMath {
     private var sDmgMult: Double { get { return 10 / pow(10, S_DMG_PWR_RED) } }
     
     // returns the cp modifier of the pokemon given cp, base, and individual stats
-    private func calcCpModifier(cp: Double, baseAtt: Int, baseDef: Int, baseStam: Int, indAtt: Int, indDef: Int, indStam: Int) -> Double {
+    func calcCpModifier(cp: Double, baseAtt: Double, baseDef: Double, baseStam: Double, indAtt: Double, indDef: Double, indStam: Double) -> Double {
         let numerator = 10 * cp
-        let denominator = Double(baseAtt + indAtt) * pow(Double(baseDef + indDef), 0.5) * pow(Double(baseStam + indStam), 0.5)
-        return sqrt(numerator / denominator)
+        let denominator = (baseAtt + indAtt) * pow(baseDef + indDef, 0.5) * pow(baseStam + indStam, 0.5)
+        let calculatedCpM = sqrt(numerator / denominator)
+        
+        let index = getCpMIndexClosestToValue(calculatedCpM)
+        
+        return cpModifiers[index]
     }
     
     // returns cp modifier of given level
@@ -69,20 +77,26 @@ class PokeMath {
     }
     
     // returns the level of the pokemon given cp, base, and individual stats
-    func calcLevel(cp: Double, baseAtt: Int, baseDef: Int, baseStam: Int, indAtt: Int, indDef: Int, indStam: Int) -> Double {
+    func calcLevel(cp: Double, baseAtt: Double, baseDef: Double, baseStam: Double, indAtt: Double, indDef: Double, indStam: Double) -> Double {
         let calculatedCpM = calcCpModifier(cp, baseAtt: baseAtt, baseDef: baseDef, baseStam: baseStam, indAtt: indAtt, indDef: indDef, indStam: indStam)
         
+        let index = getCpMIndexClosestToValue(calculatedCpM)
+        
+        return Double(1 + index) / 2.0 + 0.5
+    }
+    
+    private func getCpMIndexClosestToValue(value: Double) -> Int {
         var closestIndexSoFar: Int = 0
         var closestDifferenceSoFar: Double = 1
         for (index, cpM) in cpModifiers.enumerate() {
-            let difference = abs(calculatedCpM - cpM)
+            let difference = abs(value - cpM)
             if  difference < closestDifferenceSoFar {
                 closestIndexSoFar = index
                 closestDifferenceSoFar = difference
             }
         }
         
-        return Double(1 + closestIndexSoFar) / 2.0 + 0.5
+        return closestIndexSoFar
     }
     
     // calculate attack and defense
@@ -95,12 +109,16 @@ class PokeMath {
     }
     
     // returns the number of charges a special move has given an energy delta
-    func calcSc(energyDelta: Int) -> Int {
-        return -1 * (FULL_ENERGY / energyDelta)
+    func calcSc(energyDelta: Int) -> Double {
+        return Double(-1 * (FULL_ENERGY / energyDelta))
     }
     
     func calcEHp(hp: Double, h_xy: Double, defense: Double) -> Double {
         return ( hp - h_xy * C ) * ( defense / def_y )
+    }
+    
+    func calcEHpDef(hp: Double, h_xy: Double, defense: Double) -> Double {
+       return DEF_HP_MULT * (hp - h_xy * C * DEF_HP_MULT) * (defense / def_y)
     }
     
     func calcNumHits(hp: Double, defense: Double) -> Double {

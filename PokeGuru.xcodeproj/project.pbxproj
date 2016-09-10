@@ -18,6 +18,7 @@
 		C7FA53EF1D7EDA7100BCAB7B /* PokeMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */; };
 		C7FA53F61D81CCE900BCAB7B /* PokeMathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53F51D81CCE900BCAB7B /* PokeMathTest.swift */; };
 		C7FA53F81D83140200BCAB7B /* GameDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53F71D83140200BCAB7B /* GameDataTests.swift */; };
+		C7FA53FA1D838B7F00BCAB7B /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FA53F91D838B7F00BCAB7B /* TestUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		C7FA53ED1D7EDA7100BCAB7B /* PokeMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeMath.swift; sourceTree = "<group>"; };
 		C7FA53F51D81CCE900BCAB7B /* PokeMathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeMathTest.swift; sourceTree = "<group>"; };
 		C7FA53F71D83140200BCAB7B /* GameDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDataTests.swift; sourceTree = "<group>"; };
+		C7FA53F91D838B7F00BCAB7B /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				C7FA53F51D81CCE900BCAB7B /* PokeMathTest.swift */,
 				C7FA53DC1D7ED65700BCAB7B /* Info.plist */,
 				C7FA53F71D83140200BCAB7B /* GameDataTests.swift */,
+				C7FA53F91D838B7F00BCAB7B /* TestUtils.swift */,
 			);
 			path = PokeGuruTests;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7FA53DB1D7ED65700BCAB7B /* PokeGuruTests.swift in Sources */,
+				C7FA53FA1D838B7F00BCAB7B /* TestUtils.swift in Sources */,
 				C7FA53EF1D7EDA7100BCAB7B /* PokeMath.swift in Sources */,
 				C7FA53F61D81CCE900BCAB7B /* PokeMathTest.swift in Sources */,
 				C7FA53EC1D7ED7AC00BCAB7B /* GameData.swift in Sources */,

@@ -29,8 +29,8 @@ public struct GameDataPokemon: Equatable {
     let movementTimer: Int
     let jumpTime: Double
     let attackTimer: Int
-    let quickMoves: [Int]
-    let cinematicMoves: [Int]
+    let quickMoves: [GameDataMove]
+    let cinematicMoves: [GameDataMove]
     let animationTime: [Double]
     let evolution: Int?
     let evolutionPips: String

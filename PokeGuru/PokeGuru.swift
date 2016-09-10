@@ -14,33 +14,146 @@ public class PokeGuru {
     private static let GAME_DATA_TYPES = "GAME_DATA_TYPES"
 
     private static let typeData: [GameDataType] = PokeGuru.getTypeData()
-    private static let pokemonData: [GameDataPokemon] = PokeGuru.getPokemonData()
     private static let moveData: [GameDataMove] = PokeGuru.getMoveData()
+    private static let pokemonData: [GameDataPokemon] = PokeGuru.getPokemonData()
     
-    public static func pokemon(forId id: Int) -> GameDataPokemon {
+    private static let pokeMath = PokeMath()
+    
+    private let pokemon: GameDataPokemon
+    private let fastMove: GameDataMove
+    private let specialMove: GameDataMove
+    
+    private let cp: Double
+    private let individualAttack: Double
+    private let individualDefense: Double
+    private let individualStamina: Double
+    
+    private let cpModifier: Double
+    private let attack: Double
+    private let defense: Double
+    private let hp: Double
+    private let h_xy: Double
+
+    private let eHpDefense: Double
+    private let eHp: Double
+    
+    public let dpsFast: Double
+    public let dpsCombo: Double
+    public let dpsDefense: Double
+
+    public let tdoOffense: Double
+    public let tdoDefense: Double
+    public let offensiveEfficiency: Double
+    public let defensiveEfficiency: Double
+    
+    public var uselessSpecial: Bool { get { return dpsFast >= dpsCombo } }
+    
+    init(pokemonId: Int, fastMoveId: Int, specialMoveId: Int, cp: Int,
+         individualAttack: Int, individualDefense: Int, individualStamina: Int) {
+        self.pokemon = PokeGuru.lookupPokemon(forId: pokemonId)
+        self.fastMove = PokeGuru.lookupMove(forId: fastMoveId)
+        self.specialMove = PokeGuru.lookupMove(forId: specialMoveId)
+        self.cp = Double(cp)
+        self.individualAttack = Double(individualAttack)
+        self.individualDefense = Double(individualDefense)
+        self.individualStamina = Double(individualStamina)
+        
+        let pokeMath = PokeMath()
+        
+        self.cpModifier = pokeMath.calcCpModifier(self.cp, baseAtt: Double(pokemon.baseAttack), baseDef: Double(pokemon.baseDefense),
+                                                           baseStam: Double(pokemon.baseStamina), indAtt: self.individualAttack,
+                                                           indDef: self.individualDefense, indStam: self.individualStamina)
+        
+        self.attack = pokeMath.calcStat(Double(pokemon.baseAttack), individualStat: self.individualAttack, cpModifier: cpModifier)
+        self.defense = pokeMath.calcStat(Double(pokemon.baseDefense), individualStat: self.individualDefense, cpModifier: cpModifier)
+        self.hp = floor(pokeMath.calcStat(Double(pokemon.baseStamina), individualStat: self.individualStamina, cpModifier: cpModifier))
+        self.h_xy = pokeMath.calcNumHits(hp, defense: defense)
+        self.eHp = pokeMath.calcEHp(hp, h_xy: h_xy, defense: defense)
+        self.eHpDefense = pokeMath.calcEHpDef(hp, h_xy: h_xy, defense: defense)
+
+        var tdoTuple = PokeGuru.calcTdo(attack, hp: hp, eHp: eHp, eHpDef: eHpDefense, fastMove: fastMove, specialMove: specialMove, pokemon: pokemon)
+
+        self.tdoOffense = tdoTuple.tdoOff
+        self.tdoDefense = tdoTuple.tdoDef
+        self.dpsFast = tdoTuple.dpsFast
+        self.dpsCombo = tdoTuple.dpsCombo
+        self.dpsDefense = tdoTuple.dpsDef
+        
+        // determine the top offensive and defensive move sets for this pokemon
+        var maxTdoOffense = tdoOffense
+        var maxTdoDefense = tdoDefense
+
+        for fm in pokemon.quickMoves {
+            for sm in pokemon.cinematicMoves {
+                tdoTuple = PokeGuru.calcTdo(attack, hp: hp, eHp: eHp, eHpDef: eHpDefense,
+                                                fastMove: fm, specialMove: sm, pokemon: pokemon)
+
+                if tdoTuple.tdoDef > maxTdoDefense {
+                    maxTdoDefense = tdoTuple.tdoDef
+                }
+                if tdoTuple.tdoOff > maxTdoOffense {
+                    maxTdoOffense = tdoTuple.tdoOff
+                }
+            }
+        }
+        
+        self.offensiveEfficiency = tdoOffense / maxTdoOffense
+        self.defensiveEfficiency = tdoDefense / maxTdoDefense
+    }
+    
+    // takes a pokemon id and returns the corresponding pokemon object
+    public static func lookupPokemon(forId id: Int) -> GameDataPokemon {
         return pokemonData[id - 1]
     }
     
-    public static func move(forId id: Int) -> GameDataMove {
+    // takes a move id and returns the corresponding move object
+    public static func lookupMove(forId id: Int) -> GameDataMove {
         return moveData.filter { $0.id == id }[0]
     }
     
-    public static func type(forId id: Int) -> GameDataType {
+    // takes a type id and returns the corresponding type object
+    public static func lookupType(forId id: Int) -> GameDataType {
         return typeData[id - 1]
     }
     
-    private static func extractValue<T>(ofkey key: String, fromDict dict: [String: AnyObject?]) -> T? {
-        return dict[key] as? T
+    private static func calcTdo(attack: Double, hp: Double, eHp: Double, eHpDef: Double, fastMove: GameDataMove,
+                                specialMove: GameDataMove, pokemon: GameDataPokemon)
+                            -> (tdoOff: Double, tdoDef: Double, dpsFast: Double, dpsCombo: Double, dpsDef: Double) {
+        let fDmg = pokeMath.calcFDmg(attack, fPwr: Double(fastMove.power),
+                                      stab: PokeGuru.calcStab(pokemon, move: fastMove, value: pokeMath.STAB))
+        let fDur = Double(fastMove.duration) / 1000.0
+        let fEng = Double(fastMove.energyDelta)
+        let sDmg = pokeMath.calcSDmg(attack, sPwr: Double(specialMove.power),
+                                      stab: PokeGuru.calcStab(pokemon, move: fastMove, value: pokeMath.STAB))
+        let sDur = Double(specialMove.duration) / 1000.0
+        let sC = pokeMath.calcSc(specialMove.energyDelta)
+        let eReq = pokeMath.calcEReqOff(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC)
+        let dpsFast = pokeMath.calcDpsFast(fDmg, fDur: fDur)
+        let dpsCombo = pokeMath.calcDpsCombo(eReq, fEng: fEng, fDmg: fDmg, sDmg: sDmg, fDur: fDur, sDur: sDur, sC: sC)
+        let dpsMax = max(dpsFast, dpsCombo)
+        let dpsDef = pokeMath.calcDpsDef(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC, fDmg: fDmg, sDmg: sDmg)
+        let tdoOff = pokeMath.calcOffTdo(dpsMax, eHp: eHp)
+        let tdoDef = pokeMath.calcDefTdo(dpsDef, eHpDef: eHpDef)
+        
+        return (tdoOff, tdoDef, dpsFast, dpsCombo, dpsDef)
+    }
+    
+    private static func calcStab(pokemon: GameDataPokemon, move: GameDataMove, value: Double) -> Double {
+        return pokemon.types.contains(move.type) ? value : 1.0
     }
     
     // takes an array of type ids and returns their corresponding type objects
     private static func lookupTypes(typeIds: [Int]) -> [GameDataType] {
-        return typeIds.map { return self.type(forId: $0) }
+        return typeIds.map { return self.lookupType(forId: $0) }
     }
     
-    // convenience method for only looking up one type
-    private static func lookupType(typeId: Int) -> GameDataType {
-        return lookupTypes([typeId])[0]
+    // takes an array of move ids and returns their corresponding move objects
+    private static func lookupMoves(moveIds: [Int]) -> [GameDataMove] {
+        return moveIds.map { return self.lookupMove(forId: $0 ) }
+    }
+    
+    private static func extractValue<T>(ofkey key: String, fromDict dict: [String: AnyObject?]) -> T? {
+        return dict[key] as? T
     }
     
     private static func getPokemonData() -> [GameDataPokemon] {
@@ -52,6 +165,8 @@ public class PokeGuru {
 
         for pokemonDict in pokemonJson as! [[String: AnyObject]] {
             let typeIds: [Int] = extractValue(ofkey: "Types", fromDict: pokemonDict)!
+            let quickMoveIds: [Int] = extractValue(ofkey: "Quick Moves", fromDict: pokemonDict)!
+            let cinematicMoveIds: [Int] = extractValue(ofkey: "Cinematic Moves", fromDict: pokemonDict)!
             
             let gameDataPokemon =
                 GameDataPokemon(id: extractValue(ofkey: "ID", fromDict: pokemonDict)!,
@@ -74,8 +189,8 @@ public class PokeGuru {
                                 movementTimer: extractValue(ofkey: "Movement Timer (Sec)", fromDict: pokemonDict)!,
                                 jumpTime: extractValue(ofkey: "Jump Time (Sec)", fromDict: pokemonDict)!,
                                 attackTimer: extractValue(ofkey: "Attack Timer (Sec)", fromDict: pokemonDict)!,
-                                quickMoves: extractValue(ofkey: "Quick Moves", fromDict: pokemonDict)!,
-                                cinematicMoves: extractValue(ofkey: "Cinematic Moves", fromDict: pokemonDict)!,
+                                quickMoves: lookupMoves(quickMoveIds),
+                                cinematicMoves: lookupMoves(cinematicMoveIds),
                                 animationTime: extractValue(ofkey: "Animation Time", fromDict: pokemonDict)!,
                                 evolution: extractValue(ofkey: "Evolution", fromDict: pokemonDict),
                                 evolutionPips: extractValue(ofkey: "Evolution Pips", fromDict: pokemonDict)!,
@@ -104,7 +219,7 @@ public class PokeGuru {
                              name: extractValue(ofkey: "Name", fromDict: movesDict)!,
                              moveType: extractValue(ofkey: "Move Type", fromDict: movesDict)!,
                              animationId: extractValue(ofkey: "Animation ID", fromDict: movesDict)!,
-                             type: lookupType(typeId),
+                             type: lookupType(forId: typeId),
                              power: extractValue(ofkey: "Power", fromDict: movesDict) ?? 0,
                              accuracyChance: extractValue(ofkey: "Accuracy Chance", fromDict: movesDict)!,
                              staminaLossScalar: extractValue(ofkey: "Stamina Loss Scalar", fromDict: movesDict) ?? 0,

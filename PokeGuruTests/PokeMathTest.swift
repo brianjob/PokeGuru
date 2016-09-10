@@ -52,11 +52,6 @@ class PokeMathTest: XCTestCase {
         super.tearDown()
     }
     
-    let delta = 0.0001
-    func equal(a: Double, _ b: Double) -> Bool {
-        return abs(a - b) < delta
-    }
-    
     func testCalcLevel() {
         let pokeMath = PokeMath()
         
@@ -91,9 +86,9 @@ class PokeMathTest: XCTestCase {
         let defTest = pokeMath.calcStat(baseDef, individualStat: indDef, cpModifier: cpM)
         let hpTest = pokeMath.calcHp(baseStam, individualStam: indStam, cpModifier: cpM)
         
-        XCTAssert(equal(attTest,atk))
-        XCTAssert(equal(defTest,def))
-        XCTAssert(equal(hpTest,hp))
+        XCTAssert(TestUtils.equal(attTest,atk))
+        XCTAssert(TestUtils.equal(defTest,def))
+        XCTAssert(TestUtils.equal(hpTest,hp))
     }
     
     func testCalcNumHits() {
@@ -101,7 +96,7 @@ class PokeMathTest: XCTestCase {
         
         let h_xyTest = pokeMath.calcNumHits(hp, defense: def)
         
-        XCTAssert(equal(h_xyTest, h_xy))
+        XCTAssert(TestUtils.equal(h_xyTest, h_xy))
     }
     
     func testCalcEHp() {
@@ -109,7 +104,15 @@ class PokeMathTest: XCTestCase {
         
         let eHpTest = pokeMath.calcEHp(hp, h_xy: h_xy, defense: def)
         
-        XCTAssert(equal(eHpTest, eHp))
+        XCTAssert(TestUtils.equal(eHpTest, eHp))
+    }
+    
+    func testCalcEhpDef() {
+        let pokeMath = PokeMath()
+        
+        let eHpDefTest = pokeMath.calcEHpDef(hp, h_xy: h_xy, defense: def)
+        
+        XCTAssert(TestUtils.equal(eHpDefTest, eHpDef))
     }
     
     func testCalcEReqOff() {
@@ -117,7 +120,7 @@ class PokeMathTest: XCTestCase {
         
         let eReqTest = pokeMath.calcEReqOff(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC)
         
-        XCTAssert(equal(eReqTest, eReq))
+        XCTAssert(TestUtils.equal(eReqTest, eReq))
     }
     
     func testCalcEReqDef() {
@@ -125,7 +128,7 @@ class PokeMathTest: XCTestCase {
         
         let eReqTest = pokeMath.calcEReqDef(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC, eReqOff: eReq)
         
-        XCTAssert(equal(eReqTest, eReqDef))
+        XCTAssert(TestUtils.equal(eReqTest, eReqDef))
     }
     
     func testCalcDpsCombo() {
@@ -133,7 +136,7 @@ class PokeMathTest: XCTestCase {
         
         let dpsComboTest = pokeMath.calcDpsCombo(eReq, fEng: fEng, fDmg: fDmg, sDmg: sDmg, fDur: fDur, sDur: sDur, sC: sC)
         
-        XCTAssert(equal(dpsComboTest, dpsCombo))
+        XCTAssert(TestUtils.equal(dpsComboTest, dpsCombo))
     }
     
     func testCalcDpsFast() {
@@ -141,7 +144,7 @@ class PokeMathTest: XCTestCase {
         
         let dpsFastTest = pokeMath.calcDpsFast(fDmg, fDur: fDur)
         
-        XCTAssert(equal(dpsFastTest, fDps))
+        XCTAssert(TestUtils.equal(dpsFastTest, fDps))
     }
     
     func testCalcDpsDef() {
@@ -149,7 +152,7 @@ class PokeMathTest: XCTestCase {
         
         let dpsDefTest = pokeMath.calcDpsDef(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC, fDmg: fDmg, sDmg: sDmg)
         
-        XCTAssert(equal(dpsDefTest, dpsDef))
+        XCTAssert(TestUtils.equal(dpsDefTest, dpsDef))
     }
     
     func testCalcFDmg() {
@@ -157,7 +160,7 @@ class PokeMathTest: XCTestCase {
         
         let fDmgTest = pokeMath.calcFDmg(atk, fPwr: fPwr, stab: stab)
         
-        XCTAssert(equal(fDmgTest, fDmg))
+        XCTAssert(TestUtils.equal(fDmgTest, fDmg))
     }
     
     func testCalcSDmg() {
@@ -165,7 +168,7 @@ class PokeMathTest: XCTestCase {
         
         let sDmgTest = pokeMath.calcSDmg(atk, sPwr: sPwr, stab: stab)
         
-        XCTAssert(equal(sDmgTest, sDmg))
+        XCTAssert(TestUtils.equal(sDmgTest, sDmg))
     }
     
     func testCalcOffTdo() {
@@ -173,7 +176,7 @@ class PokeMathTest: XCTestCase {
         
         let offTdoTest = pokeMath.calcOffTdo(fDps, eHp: eHp)
         
-        XCTAssert(equal(offTdoTest, tdo))
+        XCTAssert(TestUtils.equal(offTdoTest, tdo))
     }
     
     func testDefTdo() {
@@ -181,7 +184,7 @@ class PokeMathTest: XCTestCase {
         
         let defTdoTest = pokeMath.calcDefTdo(dpsDef, eHpDef: eHpDef)
         
-        XCTAssert(equal(defTdoTest, tdoDef))
+        XCTAssert(TestUtils.equal(defTdoTest, tdoDef))
     }
     
     func testNumSpecialCharges() {
