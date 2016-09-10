@@ -9,34 +9,34 @@
 import Foundation
 
 public struct GameDataPokemon: Equatable {
-    let id: Int
-    let name: String
-    let types: [GameDataType]
-    let baseStamina: Int
-    let baseAttack: Int
-    let baseDefense: Int
-    let maxCP: Double
-    let height: Double
-    let weight: Double
-    let heightStdDev: Double
-    let weightStdDev: Double
-    let baseCaptureRate: Double
-    let baseFleeRate: Double
-    let collisionRadius: Double
-    let collisionHeight: Double
-    let collisionHeadRadius: Double
-    let movementType: String
-    let movementTimer: Int
-    let jumpTime: Double
-    let attackTimer: Int
-    let quickMoves: [GameDataMove]
-    let cinematicMoves: [GameDataMove]
-    let animationTime: [Double]
-    let evolution: Int?
-    let evolutionPips: String
-    let pokemonClass: Int
-    let familyId: Int
-    let candyToEvolve: Int
+    public let id: Int
+    public let name: String
+    public let types: [GameDataType]
+    public let baseStamina: Int
+    public let baseAttack: Int
+    public let baseDefense: Int
+    public let maxCP: Double
+    public let height: Double
+    public let weight: Double
+    public let heightStdDev: Double
+    public let weightStdDev: Double
+    public let baseCaptureRate: Double
+    public let baseFleeRate: Double
+    public let collisionRadius: Double
+    public let collisionHeight: Double
+    public let collisionHeadRadius: Double
+    public let movementType: String
+    public let movementTimer: Int
+    public let jumpTime: Double
+    public let attackTimer: Int
+    public let quickMoves: [GameDataMove]
+    public let cinematicMoves: [GameDataMove]
+    public let animationTime: [Double]
+    public let evolution: Int?
+    public let evolutionPips: String
+    public let pokemonClass: Int
+    public let familyId: Int
+    public let candyToEvolve: Int
 }
 
 public func ==(lhs: GameDataPokemon, rhs: GameDataPokemon) -> Bool {
@@ -48,21 +48,21 @@ public struct GameDataMove: Equatable {
     private let NOT_EFFECTIVE_MODIFIER = 0.8
     private let NO_EFFECT_MODIFIER = 0.8
     
-    let id: Int
-    let name: String
-    let moveType: String
-    let animationId: Int
-    let type: GameDataType
-    let power: Int
-    let accuracyChance: Double
-    let staminaLossScalar: Double
-    let trainerLevelMin: Double
-    let trainerLevelMax: Double
-    let duration: Int
-    let damageWindowStart: Int
-    let damageWindowEnd: Int
-    let energyDelta: Int
-    let criticalChance: Double
+    public let id: Int
+    public let name: String
+    public let moveType: String
+    public let animationId: Int
+    public let type: GameDataType
+    public let power: Int
+    public let accuracyChance: Double
+    public let staminaLossScalar: Double
+    public let trainerLevelMin: Double
+    public let trainerLevelMax: Double
+    public let duration: Int
+    public let damageWindowStart: Int
+    public let damageWindowEnd: Int
+    public let energyDelta: Int
+    public let criticalChance: Double
     
     // returns the type modifier of a move against a given defender
     public func calcTypeModifier(defender: GameDataPokemon) -> Double {
@@ -89,11 +89,11 @@ public func ==(lhs: GameDataMove, rhs: GameDataMove) -> Bool {
 }
 
 public struct GameDataType: Hashable {
-    let id: Int
-    let name: String
-    let effective: [Int]
-    let notEffective: [Int]
-    let noEffect: [Int]
+    public let id: Int
+    public let name: String
+    public let effective: [Int]
+    public let notEffective: [Int]
+    public let noEffect: [Int]
     
     public var hashValue: Int { get { return id } }
 }

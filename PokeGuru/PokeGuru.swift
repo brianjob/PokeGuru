@@ -19,10 +19,6 @@ public class PokeGuru {
     
     private static let pokeMath = PokeMath()
     
-    private let pokemon: GameDataPokemon
-    private let fastMove: GameDataMove
-    private let specialMove: GameDataMove
-    
     private let cp: Double
     private let individualAttack: Double
     private let individualDefense: Double
@@ -37,6 +33,10 @@ public class PokeGuru {
     private let eHpDefense: Double
     private let eHp: Double
     
+    public let pokemon: GameDataPokemon
+    public let fastMove: GameDataMove
+    public let specialMove: GameDataMove
+    
     public let dpsFast: Double
     public let dpsCombo: Double
     public let dpsDefense: Double
@@ -48,7 +48,7 @@ public class PokeGuru {
     
     public var uselessSpecial: Bool { get { return dpsFast >= dpsCombo } }
     
-    init(pokemonId: Int, fastMoveId: Int, specialMoveId: Int, cp: Int,
+    public init(pokemonId: Int, fastMoveId: Int, specialMoveId: Int, cp: Int,
          individualAttack: Int, individualDefense: Int, individualStamina: Int) {
         self.pokemon = PokeGuru.lookupPokemon(forId: pokemonId)
         self.fastMove = PokeGuru.lookupMove(forId: fastMoveId)
