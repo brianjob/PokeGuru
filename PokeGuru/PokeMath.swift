@@ -9,7 +9,7 @@
 import Foundation
 
 class PokeMath {
-    let STAB = 1.25
+    static let STAB = 1.25
     
     private let ENERGY_PER_HP_LOST = 0.5
     private let FULL_ENERGY = 100

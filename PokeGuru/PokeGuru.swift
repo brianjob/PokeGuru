@@ -121,11 +121,11 @@ public class PokeGuru {
                                 specialMove: GameDataMove, pokemon: GameDataPokemon)
                             -> (tdoOff: Double, tdoDef: Double, dpsFast: Double, dpsCombo: Double, dpsDef: Double) {
         let fDmg = pokeMath.calcFDmg(attack, fPwr: Double(fastMove.power),
-                                      stab: PokeGuru.calcStab(pokemon, move: fastMove, value: pokeMath.STAB))
+                                      stab: PokeGuru.calcStab(pokemon, move: fastMove))
         let fDur = Double(fastMove.duration) / 1000.0
         let fEng = Double(fastMove.energyDelta)
         let sDmg = pokeMath.calcSDmg(attack, sPwr: Double(specialMove.power),
-                                      stab: PokeGuru.calcStab(pokemon, move: fastMove, value: pokeMath.STAB))
+                                      stab: PokeGuru.calcStab(pokemon, move: specialMove))
         let sDur = Double(specialMove.duration) / 1000.0
         let sC = pokeMath.calcSc(specialMove.energyDelta)
         let eReq = pokeMath.calcEReqOff(hp, eHp: eHp, fEng: fEng, fDur: fDur, sDur: sDur, sC: sC)
@@ -139,8 +139,9 @@ public class PokeGuru {
         return (tdoOff, tdoDef, dpsFast, dpsCombo, dpsDef)
     }
     
-    private static func calcStab(pokemon: GameDataPokemon, move: GameDataMove, value: Double) -> Double {
-        return pokemon.types.contains(move.type) ? value : 1.0
+    private static func calcStab(pokemon: GameDataPokemon, move: GameDataMove) -> Double {
+        let stab = pokemon.types.contains(move.type) ? PokeMath.STAB : 1.0
+        return stab
     }
     
     // takes an array of type ids and returns their corresponding type objects

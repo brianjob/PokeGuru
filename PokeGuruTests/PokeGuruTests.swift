@@ -94,12 +94,20 @@ class PokeGuruTests: XCTestCase {
         XCTAssert(TestUtils.equal(pokeGuru.defensiveEfficiency, 0.86476))
         XCTAssert(TestUtils.equal(pokeGuru.dpsDefense, 5.15423))
         XCTAssert(!pokeGuru.uselessSpecial)
+        XCTAssert(TestUtils.equal(pokeGuru.eHp, 123.3696))
     }
     
     func testUselessSpecial() {
         let pokeGuru = PokeGuru(pokemonId: 4, fastMoveId: 209, specialMoveId: 101, cp: 714, individualAttack: 7, individualDefense: 7, individualStamina: 7)
         
         XCTAssert(pokeGuru.uselessSpecial)
+    }
+    
+    func testStab() {
+        let shardPulse = PokeGuru(pokemonId: 131, fastMoveId: 217, specialMoveId: 82, cp: 2523, individualAttack: 14, individualDefense: 15, individualStamina: 11)
+        
+        XCTAssert(Int(round(shardPulse.tdoOffense)) == 313)
+        XCTAssert(Int(round(shardPulse.tdoDefense)) == 289)
     }
     
     func testPerformancePokeGuru() {
