@@ -25,13 +25,13 @@ public class PokeGuru {
     private let individualStamina: Double
     
     private let cpModifier: Double
-    private let attack: Double
-    private let defense: Double
-    private let hp: Double
     private let h_xy: Double
 
     private let eHpDefense: Double
 
+    public let attack: Double
+    public let defense: Double
+    public let hp: Double
     public let eHp: Double
     
     public let pokemon: GameDataPokemon
